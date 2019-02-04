@@ -84,5 +84,17 @@ bitmap_t simple_png_read(char* file_name)
 
   png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
 
+  fclose(fd);
+
   return result;
+}
+
+void simple_png_free(bitmap_t *bmp)
+{
+  int y;
+  for (y = 0; y < bmp->height; y++)
+  {
+    free(bmp->rows[y]);
+  }
+  free(bmp->rows);
 }

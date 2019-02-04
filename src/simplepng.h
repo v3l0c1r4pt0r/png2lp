@@ -11,5 +11,6 @@ typedef struct {
 } bitmap_t;
 
 bitmap_t simple_png_read(char* file_name);
+void simple_png_free(bitmap_t *bmp);
 
 #endif // SIMPLEPNG_H

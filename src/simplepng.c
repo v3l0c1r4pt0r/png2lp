@@ -76,7 +76,6 @@ bitmap_t simple_png_read(char* file_name)
   for (y=0; y<result.height; y++)
   {
     result.row_count = png_get_rowbytes(png_ptr,info_ptr);
-    printf("bpr=%d\n", result.row_count);
     result.rows[y] = (png_byte*) malloc(result.row_count);
   }
 

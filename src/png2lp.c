@@ -3,7 +3,7 @@
 
 #include "binrd.h"
 #include "simplepng.h"
-//#include "printer.h"
+#include "printer.h"
 
 int main(int argc, char **argv)
 {

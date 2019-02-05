@@ -23,6 +23,7 @@ int main(int argc, char **argv)
   if (bmp.bit_depth != 1)
   {
     printf("unsupported color scheme: %d\n", bmp.bit_depth);
+    return 1;
   }
 
   while (y < bmp.height)

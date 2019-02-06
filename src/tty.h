@@ -1,17 +1,9 @@
 #ifndef TTY_H
 #define TTY_H
-char start[] = "";
-char nl[]="\n";
+#include "printer.h"
 
-printer_t tty_vt100 = {
-  .name = "VT100",
-  .feed_bit = tty_feed_bit,
-}
-
-page_t tty_80x25 = {
-  .width=80,
-  .height=25
-};
+printer_t tty_vt100;
+page_t tty_80x25;
 
 void tty_init();
 

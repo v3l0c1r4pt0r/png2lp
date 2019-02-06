@@ -1,17 +1,10 @@
 #ifndef OKI_H
 #define OKI_H
-char start[] = "\eK\x23\x01";
-char nl[]="\r\eJ\x18";
+#include "printer.h"
 
-printer_t oki_3321 = {
-  .name = "Oki 3321",
-  .feed_bit = oki_feed_bit,
-}
+printer_t oki_3321;
+page_t oki_a4p;
 
-page_t oki_a4p = {
-  .name = "A4 Portrait",
-  .width=0x1e4,
-  .height=95*8
-};
+void oki_init();
 
 #endif // OKI_H

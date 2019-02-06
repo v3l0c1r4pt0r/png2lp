@@ -26,6 +26,9 @@ int main(int argc, char **argv)
     return 1;
   }
 
+  /* init printers */
+  register_sinks();
+
   while (y < bmp.height)
   {
     bitstream_t reader = init_bitstream(bmp.rows[y], bmp.width);

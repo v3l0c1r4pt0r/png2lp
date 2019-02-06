@@ -1,10 +1,12 @@
+#include <stdlib.h>
+
 #include "list.h"
 #include "oki.h"
 #include "tty.h"
 #include "printer.h"
 
 typedef struct {
-  list_t printer;
+  printer_t *printer;
   list_t *pages;
 } printer_descriptor_t;
 
@@ -17,12 +19,12 @@ void register_sinks()
   tty_init();
 }
 
-sink_t *printer_register_sink(printer_t *printer)
+int printer_register_sink(printer_t *printer)
 {
   return NULL;
 }
 
-int printer_register_page(sink_t *sink, page_t *page)
+int printer_register_page(char *printer, page_t *page)
 {
   return -1;
 }

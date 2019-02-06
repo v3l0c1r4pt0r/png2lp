@@ -21,8 +21,8 @@ page_t oki_a4p = {
 
 void oki_init()
 {
-  sink_t *sink = printer_register_sink(&oki_3321);
-  printer_register_page(sink, &oki_a4p);
+  printer_register_sink(&oki_3321);
+  printer_register_page(oki_3321.name, &oki_a4p);
 }
 
 void oki_feed_bit(struct printer *printer, struct page *page, int x, int y, int bit)

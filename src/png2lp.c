@@ -13,6 +13,25 @@ int main(int argc, char **argv)
     printf("Usage: %s [file-name]\n", argv[0]);
     return 1;
   }
+
+  /* init printers */
+  register_sinks();
+
+  if (strcmp(argv[1], "-l") == 0)
+  {
+    /* list printers */
+    int i;
+    char **printers = printer_get_sinks();
+
+    for (i = 0; printers[i] != NULL; i++)
+    {
+      printf("%d: %s\n", i, printers[i]);
+    }
+
+    return 0;
+  }
+
+  /* convert png from param 1 */
   char *fn = argv[1];
   bitmap_t bmp = simple_png_read(fn);
   if (bmp.width == 0 || bmp.height == 0)
@@ -25,9 +44,6 @@ int main(int argc, char **argv)
     printf("unsupported color scheme: %d\n", bmp.bit_depth);
     return 1;
   }
-
-  /* init printers */
-  register_sinks();
 
   while (y < bmp.height)
   {

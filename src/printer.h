@@ -15,11 +15,12 @@ struct page;
  * \param bit Bit to set
  */
 typedef void (*printer_feed_bit_t)(struct printer *printer, struct page *page, int x, int y, int bit);
+typedef void (*printer_set_size_t)(struct printer *printer, struct page *page, int width, int height);
 
 typedef struct printer {
   char *name;
   printer_feed_bit_t feed_bit;
-  printer_ set_size;
+  printer_set_size_t set_size;
 } printer_t;
 
 typedef struct page {

@@ -35,6 +35,20 @@ int main(int argc, char **argv)
 
     return 0;
   }
+  else if (strcmp(argv[1], "-L") == 0 && argc > 2)
+  {
+    /* list pages */
+    int i;
+    sink_t sink = printer_get_sink(argv[2]);
+    char **pages = printer_get_sink_pages(&sink);
+
+    for (i = 0; pages[i] != NULL; i++)
+    {
+      printf("%d: %s\n", i, pages[i]);
+    }
+
+    return 0;
+  }
 
   /* convert png from param 1 */
   char *fn = argv[1];

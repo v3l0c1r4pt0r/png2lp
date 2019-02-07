@@ -10,6 +10,8 @@ int main(int argc, char **argv)
 {
   set_numeric_log_level(LEVEL_DEBUG);
 
+  char *printer = "VT100";
+
   int x = 0, y = 0;
   if (argc < 2)
   {
@@ -49,7 +51,7 @@ int main(int argc, char **argv)
   }
 
   /* find requested sink */
-  sink_t sink = printer_get_sink("VT100");
+  sink_t sink = printer_get_sink(printer);
   if (sink.printer == NULL)
   {
     ERROR("sink not found");

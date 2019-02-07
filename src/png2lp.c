@@ -3,10 +3,13 @@
 
 #include "binrd.h"
 #include "simplepng.h"
+#include "logger.h"
 #include "printer.h"
 
 int main(int argc, char **argv)
 {
+  set_numeric_log_level(LEVEL_DEBUG);
+
   int x = 0, y = 0;
   if (argc < 2)
   {

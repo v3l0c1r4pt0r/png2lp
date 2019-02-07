@@ -1,5 +1,6 @@
 #include <stdint.h>
 
+#include "logger.h"
 #include "binrd.h"
 
 bitstream_t init_bitstream(uint8_t *buf, int bitcount)
@@ -19,6 +20,7 @@ void feed_reader(bitstream_t *bs)
     return;
 
   bs->bits = *(bs->stream++);
+  DEBUG("loaded byte %02x", bs->bits);
   bs->bits_loaded = 8;
   bs->bitcount -= 8;
 

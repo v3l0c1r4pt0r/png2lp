@@ -102,3 +102,47 @@ sink_t printer_get_sink(char *name)
   }
   return result;
 }
+
+char **printer_get_sink_pages(sink_t *sink)
+{
+  int i = 0;
+  int count = 0;
+  list_t *pages;
+  list_t *it;
+  char **result;
+  printer_descriptor_t *descr;
+
+  /* find descriptor for sink */
+  it = printers;
+  while ((it = list_next(it)) != NULL)
+  {
+    pages = ((printer_descriptor_t*) it->value)->pages;
+    descr = (printer_descriptor_t*) it->value;
+    if (strcmp(descr->printer->name, sink->printer->name) == 0)
+    {
+      DEBUG("found sink for %s", sink->printer->name);
+      break;
+    }
+    pages = NULL;
+  }
+
+  /* get number of pages */
+  it = pages;
+  while ((it = list_next(it)) != NULL)
+  {
+    count++;
+  }
+
+  /* allocate array for page names */
+  result = (char**) malloc(count + 1);
+
+  it = pages;
+  while ((it = list_next(it)) != NULL)
+  {
+    result[i++] = ((page_t*) it->value)->name;
+  }
+
+  result[i] = NULL;
+
+  return result;
+}

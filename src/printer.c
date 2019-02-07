@@ -34,7 +34,24 @@ int printer_register_sink(printer_t *printer)
 
 int printer_register_page(char *printer, page_t *page)
 {
-  return -1;
+  // TODO: check error codes
+  printer_descriptor_t *descr;
+
+  list_t *it = printers;
+  while ((it = list_next(it)) != NULL)
+  {
+    descr = ((printer_descriptor_t*) it->value);
+    if (strcmp(descr->printer->name, printer) == 0)
+    {
+      DEBUG("found sink for %s", printer);
+      break;
+    }
+    descr = NULL;
+  }
+
+  list_append(descr->pages, page);
+
+  return 0;
 }
 
 char **printer_get_sinks()

@@ -48,6 +48,14 @@ int main(int argc, char **argv)
     return 1;
   }
 
+  /* find requested sink */
+  sink_t sink = printer_get_sink("VT100");
+  if (sink.printer == NULL)
+  {
+    ERROR("sink not found");
+    return 1;
+  }
+
   while (y < bmp.height)
   {
     bitstream_t reader = init_bitstream(bmp.rows[y], bmp.width);

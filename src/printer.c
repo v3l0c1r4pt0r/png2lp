@@ -3,6 +3,7 @@
 #include "list.h"
 #include "oki.h"
 #include "tty.h"
+#include "logger.h"
 #include "printer.h"
 
 typedef struct {
@@ -60,5 +61,27 @@ char **printer_get_sinks()
 
   result[i] = NULL;
 
+  return result;
+}
+
+sink_t printer_get_sink(char *name)
+{
+  sink_t result = {
+    .printer = NULL,
+    .page = NULL,
+    .fd = -1
+  };
+  printer_t *printer;
+  list_t *it = printers;
+  while ((it = list_next(it)) != NULL)
+  {
+    printer = ((printer_descriptor_t*) it->value)->printer;
+    if (strcmp(printer->name, name) == 0)
+    {
+      DEBUG("found sink for %s", name);
+      result.printer = printer;
+      break;
+    }
+  }
   return result;
 }

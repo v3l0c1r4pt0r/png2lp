@@ -39,7 +39,7 @@ typedef struct {
 void register_sinks();
 int printer_register_sink(printer_t *printer);
 int printer_register_page(char *printer, page_t *page);
-sink_t *printer_get_sink(char *name);
+sink_t printer_get_sink(char *name);
 char **printer_get_sinks();
 page_t *printer_get_sink_page_by_name(sink_t *sink, char *name);
 char **printer_get_sink_pages(sink_t *sink);

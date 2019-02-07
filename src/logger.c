@@ -92,11 +92,11 @@ void LOG(level_t level, char *format, ...)
     return;
   }
 
-  printf("[%s] ", levelopts[level].text);
+  fprintf(stderr, "[%s] ", levelopts[level].text);
 
   va_start(va, format);
-  vprintf(format, va);
+  vfprintf(stderr, format, va);
   va_end(va);
 
-  printf("\n");
+  fprintf(stderr, "\n");
 }

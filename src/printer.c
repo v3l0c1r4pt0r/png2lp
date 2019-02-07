@@ -44,7 +44,7 @@ char **printer_get_sinks()
   char **result;
 
   /* get number of printers */
-  while ((descr = list_next(descr)) != NULL) // TODO: why this counts to 3, where there are only 2 items
+  while ((descr = list_next(descr)) != NULL)
   {
     count++;
   }
@@ -53,9 +53,8 @@ char **printer_get_sinks()
   result = (char**) malloc(count + 1);
 
   descr = printers;
-  while (list_has_next(descr))
+  while ((descr = list_next(descr)) != NULL)
   {
-    descr = list_next(descr);
     result[i++] = ((printer_descriptor_t*) descr->value)->printer->name;
   }
 

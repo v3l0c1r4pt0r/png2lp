@@ -11,6 +11,7 @@ printer_t tty_vt100 = {
 };
 
 page_t tty_80x25 = {
+  .name = "80x25 terminal",
   .width=80,
   .height=25
 };

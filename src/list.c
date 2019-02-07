@@ -1,5 +1,6 @@
 #include <stdlib.h>
 
+#include "logger.h"
 #include "list.h"
 
 list_t *list_alloc()
@@ -37,6 +38,13 @@ list_t *list_next(list_t *element)
 {
   if (element == NULL)
   {
+    return NULL;
+  }
+
+  /* do not pass last element to user, ever */
+  if (element->next->type != LIST_ORDINARY)
+  {
+    DEBUG("skipping last element");
     return NULL;
   }
 

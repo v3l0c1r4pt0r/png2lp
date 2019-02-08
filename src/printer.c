@@ -170,3 +170,8 @@ page_t *printer_get_sink_page_by_name(sink_t *sink, char *name)
 
   return NULL;
 }
+
+void printer_set_sink_page(sink_t *sink, page_t *page)
+{
+  sink->page = page;
+}

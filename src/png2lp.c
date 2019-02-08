@@ -10,7 +10,8 @@ int main(int argc, char **argv)
 {
   set_numeric_log_level(LEVEL_DEBUG);
 
-  char *printer = "VT100";
+  char *printer_name = "VT100";
+  char *page_name = "80x25 terminal";
 
   int x = 0, y = 0;
   if (argc < 2)
@@ -65,12 +66,15 @@ int main(int argc, char **argv)
   }
 
   /* find requested sink */
-  sink_t sink = printer_get_sink(printer);
+  sink_t sink = printer_get_sink(printer_name);
   if (sink.printer == NULL)
   {
     ERROR("sink not found");
     return 1;
   }
+
+  /* select page */
+  page_t *page = printer_get_sink_page_by_name(&sink, page_name);
 
   while (y < bmp.height)
   {

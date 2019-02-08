@@ -4,6 +4,7 @@
 
 struct printer;
 struct page;
+struct sink;
 
 /**
  * \brief Handler of function feeding bit to printer
@@ -14,8 +15,8 @@ struct page;
  * \param y Position on Y axis
  * \param bit Bit to set
  */
-typedef void (*printer_feed_bit_t)(struct printer *printer, struct page *page, int x, int y, int bit);
-typedef void (*printer_set_size_t)(struct printer *printer, struct page *page, int width, int height);
+typedef void (*printer_feed_bit_t)(struct sink *sink, int x, int y, int bit);
+typedef void (*printer_set_size_t)(struct sink *sink, int width, int height);
 
 typedef struct printer {
   char *name;
@@ -30,7 +31,7 @@ typedef struct page {
   unsigned int dpi;
 } page_t;
 
-typedef struct {
+typedef struct sink {
   printer_t *printer;
   page_t *page;
   int fd;

@@ -7,7 +7,7 @@
 #include "printer.h"
 
 typedef struct {
-  printer_t *printer;
+  printer_t printer;
   list_t *pages;
 } printer_descriptor_t;
 
@@ -22,9 +22,10 @@ void register_sinks()
 
 int printer_register_sink(printer_t *printer)
 {
+  // TODO: check error codes
   printer_descriptor_t *descr = (printer_descriptor_t*) malloc(sizeof(printer_descriptor_t));
 
-  descr->printer = printer;
+  descr->printer = *printer;
   descr->pages = list_alloc();
 
   list_append(printers, descr);
@@ -41,7 +42,7 @@ int printer_register_page(char *printer, page_t *page)
   while ((it = list_next(it)) != NULL)
   {
     descr = ((printer_descriptor_t*) it->value);
-    if (strcmp(descr->printer->name, printer) == 0)
+    if (strcmp(descr->printer.name, printer) == 0)
     {
       DEBUG("found sink for %s", printer);
       break;
@@ -73,7 +74,7 @@ char **printer_get_sinks()
   descr = printers;
   while ((descr = list_next(descr)) != NULL)
   {
-    result[i++] = ((printer_descriptor_t*) descr->value)->printer->name;
+    result[i++] = ((printer_descriptor_t*) descr->value)->printer.name;
   }
 
   result[i] = NULL;
@@ -92,7 +93,7 @@ sink_t printer_get_sink(char *name)
   list_t *it = printers;
   while ((it = list_next(it)) != NULL)
   {
-    printer = ((printer_descriptor_t*) it->value)->printer;
+    printer = &(((printer_descriptor_t*) it->value)->printer);
     if (strcmp(printer->name, name) == 0)
     {
       DEBUG("found sink for %s", name);
@@ -118,7 +119,7 @@ char **printer_get_sink_pages(sink_t *sink)
   {
     pages = ((printer_descriptor_t*) it->value)->pages;
     descr = (printer_descriptor_t*) it->value;
-    if (strcmp(descr->printer->name, sink->printer->name) == 0)
+    if (strcmp(descr->printer.name, sink->printer->name) == 0)
     {
       DEBUG("found sink for %s", sink->printer->name);
       break;

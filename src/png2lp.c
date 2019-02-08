@@ -75,13 +75,19 @@ int main(int argc, char **argv)
 
   /* select page */
   page_t *page = printer_get_sink_page_by_name(&sink, page_name);
+  printer_set_sink_page(&sink, page);
+
+  /* select size */
+  printer_set_size(&sink, bmp.width, bmp.height);
 
   while (y < bmp.height)
   {
     bitstream_t reader = init_bitstream(bmp.rows[y], bmp.width);
     while(isnext(&reader))
     {
-      printf("%s", get_bit(&reader)?"  ":"\u2588\u2588");
+      int bit = get_bit(&reader);
+      printer_feed_bit(&sink, x, y, bit);
+      printf("%s", bit?"  ":"\u2588\u2588");
       x++;
     }
     printf("\n");

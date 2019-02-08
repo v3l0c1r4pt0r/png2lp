@@ -152,3 +152,21 @@ char **printer_get_sink_pages(sink_t *sink)
 
   return result;
 }
+
+page_t *printer_get_sink_page_by_name(sink_t *sink, char *name)
+{
+  list_t *it;
+  printer_descriptor_t *descr = printer_get_descriptor(sink->printer);
+
+  it = descr->pages;
+  while ((it = list_next(it)) != NULL)
+  {
+    page_t *page = (page_t*) it->value;
+    if (strcmp(page->name, name) == 0)
+    {
+      return page;
+    }
+  }
+
+  return NULL;
+}

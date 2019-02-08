@@ -20,6 +20,11 @@ void register_sinks()
   tty_init();
 }
 
+static printer_descriptor_t *printer_get_descriptor(printer_t *printer)
+{
+  return (printer_descriptor_t*) printer;
+}
+
 int printer_register_sink(printer_t *printer)
 {
   // TODO: check error codes

@@ -46,4 +46,7 @@ page_t *printer_get_sink_page_by_name(sink_t *sink, char *name);
 char **printer_get_sink_pages(sink_t *sink);
 void printer_set_sink_page(sink_t *sink, page_t *page);
 
+void printer_feed_bit(sink_t *sink, int x, int y, int bit);
+void printer_set_size(sink_t *sink, int width, int height);
+
 #endif // PRINTER_H

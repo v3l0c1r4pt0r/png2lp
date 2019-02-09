@@ -1,8 +1,8 @@
 #include "logger.h"
 #include "tty.h"
 
-void tty_feed_bit(sink_t *sink, int x, int y, int bit);
-void tty_set_size(sink_t *sink, int width, int height);
+int tty_feed_bit(sink_t *sink, int x, int y, int bit);
+int tty_set_size(sink_t *sink, int width, int height);
 
 static char start[] = "";
 static char nl[]="\n";
@@ -26,14 +26,14 @@ void tty_init()
   printer_register_page(tty_vt100.name, &tty_80x25);
 }
 
-void tty_feed_bit(sink_t *sink, int x, int y, int bit)
+int tty_feed_bit(sink_t *sink, int x, int y, int bit)
 {
   DEBUG("fed bit %d on (%d,%d)", bit,x,y);
-  return;
+  return -1;
 }
 
-void tty_set_size(sink_t *sink, int width, int height)
+int tty_set_size(sink_t *sink, int width, int height)
 {
   DEBUG("set img size to %d,%d", width, height);
-  return;
+  return -1;
 }

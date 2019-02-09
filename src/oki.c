@@ -1,7 +1,7 @@
 #include "oki.h"
 
 void oki_linefeed();
-void oki_feed_bit(sink_t *sink, int x, int y, int bit);
+int oki_feed_bit(sink_t *sink, int x, int y, int bit);
 void oki_init();
 void oki_enter_graphic_mode(int columns);
 
@@ -26,7 +26,7 @@ void oki_init()
   printer_register_page(oki_3321.name, &oki_a4p);
 }
 
-void oki_feed_bit(sink_t *sink, int x, int y, int bit)
+int oki_feed_bit(sink_t *sink, int x, int y, int bit)
 {
-  return;
+  return -1;
 }

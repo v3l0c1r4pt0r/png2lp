@@ -15,8 +15,8 @@ struct sink;
  * \param y Position on Y axis
  * \param bit Bit to set
  */
-typedef void (*printer_feed_bit_t)(struct sink *sink, int x, int y, int bit);
-typedef void (*printer_set_size_t)(struct sink *sink, int width, int height);
+typedef int (*printer_feed_bit_t)(struct sink *sink, int x, int y, int bit);
+typedef int (*printer_set_size_t)(struct sink *sink, int width, int height);
 
 typedef struct printer {
   char *name;
@@ -46,7 +46,7 @@ page_t *printer_get_sink_page_by_name(sink_t *sink, char *name);
 char **printer_get_sink_pages(sink_t *sink);
 void printer_set_sink_page(sink_t *sink, page_t *page);
 
-void printer_feed_bit(sink_t *sink, int x, int y, int bit);
-void printer_set_size(sink_t *sink, int width, int height);
+int printer_feed_bit(sink_t *sink, int x, int y, int bit);
+int printer_set_size(sink_t *sink, int width, int height);
 
 #endif // PRINTER_H

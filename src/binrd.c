@@ -47,5 +47,5 @@ int get_bit(bitstream_t *bs)
 
 int isnext(bitstream_t *bs)
 {
-  return bs->bitcount != 0;
+  return bs->bitcount != 0 || bs->bits_loaded != 0;
 }

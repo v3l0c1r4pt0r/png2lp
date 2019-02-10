@@ -135,7 +135,7 @@ int oki_feed_bit(sink_t *sink, int x, int y, int bit)
 
   /* set bit and mark as written in a word */
   word = &state->rows[row][x];
-  if (bit)
+  if (!bit)
   {
     word->bits |= masks[bitn];
   }
@@ -255,7 +255,7 @@ void oki_enter_graphic_mode(int columns)
   {
     ERROR("not enough room to push whole number (16bit available)");
   }
-  printf("%s%c%c", start, columns % 0xff, columns / 0xff);
+  printf("%s%c%c", start, columns % 0x100, columns / 0x100);
 }
 
 void oki_linefeed()

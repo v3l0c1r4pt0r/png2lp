@@ -16,9 +16,6 @@ int tty_set_size(sink_t *sink, int width, int height);
 int tty_create(sink_t *sink);
 int tty_destroy(sink_t *sink);
 
-static char start[] = "";
-static char nl[]="\n";
-
 printer_t tty_vt100 = {
   .name = "VT100",
   .feed_bit = tty_feed_bit,

@@ -99,7 +99,7 @@ int main(int argc, char **argv)
     y++;
   }
 
-  printf("Finished\n");
+  DEBUG("image parsed, cleaning up");
   printer_destroy(&sink);
   simple_png_free(&bmp);
   return 0;

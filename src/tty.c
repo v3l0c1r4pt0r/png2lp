@@ -33,11 +33,18 @@ page_t tty_80x25 = {
   .height=25
 };
 
+page_t tty_80xINF = {
+  .name = "80x25 terminal (no overflow)",
+  .width=80,
+  .height=(unsigned int)-1
+};
+
 void tty_init()
 {
   // TODO: check error codes
   printer_register_sink(&tty_vt100);
   printer_register_page(tty_vt100.name, &tty_80x25);
+  printer_register_page(tty_vt100.name, &tty_80xINF);
 }
 
 tty_state_t *tty_get_sink_state(sink_t *sink)

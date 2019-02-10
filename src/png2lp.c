@@ -12,7 +12,7 @@ int main(int argc, char **argv)
   set_numeric_log_level(LEVEL_DEBUG);
 
   char *printer_name = "VT100";
-  char *page_name = "80x25 terminal";
+  char *page_name = "80x25 terminal (no overflow)";
 
   int x = 0, y = 0;
   if (argc < 2)

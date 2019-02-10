@@ -188,3 +188,8 @@ int printer_set_size(sink_t *sink, int width, int height)
 {
   return sink->printer->set_size(sink, width, height);
 }
+
+void *printer_get_private(sink_t *sink)
+{
+  return (void*) printer_get_descriptor(sink->printer)->private;
+}

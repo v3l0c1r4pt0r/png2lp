@@ -10,7 +10,6 @@
 typedef struct {
   printer_t printer;
   list_t *pages;
-  void *private;
 } printer_descriptor_t;
 
 list_t *printers;
@@ -27,14 +26,13 @@ static printer_descriptor_t *printer_get_descriptor(printer_t *printer)
   return (printer_descriptor_t*) printer;
 }
 
-int printer_register_sink(printer_t *printer, void *private_data)
+int printer_register_sink(printer_t *printer)
 {
   // TODO: check error codes
   printer_descriptor_t *descr = (printer_descriptor_t*) malloc(sizeof(printer_descriptor_t));
 
   descr->printer = *printer;
   descr->pages = list_alloc();
-  descr->private = private_data;
 
   list_append(printers, descr);
 
@@ -109,6 +107,10 @@ sink_t printer_get_sink(char *name)
       break;
     }
   }
+
+  /* let printer alloc its private data */
+  printer_create(&result);
+
   return result;
 }
 
@@ -189,7 +191,15 @@ int printer_set_size(sink_t *sink, int width, int height)
   return sink->printer->set_size(sink, width, height);
 }
 
-void *printer_get_private(sink_t *sink)
+int printer_create(sink_t *sink)
 {
-  return (void*) printer_get_descriptor(sink->printer)->private;
+  if (sink->printer->alloc_private)
+  {
+    return sink->printer->alloc_private(sink);
+  }
+  else
+  {
+    /* printer does not support private data, always success */
+    return 0;
+  }
 }

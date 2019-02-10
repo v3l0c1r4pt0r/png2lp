@@ -24,7 +24,7 @@ page_t oki_a4p = {
 void oki_init()
 {
   // TODO: check error codes
-  printer_register_sink(&oki_3321, NULL);
+  printer_register_sink(&oki_3321);
   printer_register_page(oki_3321.name, &oki_a4p);
 }
 

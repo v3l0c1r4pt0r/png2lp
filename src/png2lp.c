@@ -84,7 +84,10 @@ int main(int argc, char **argv)
   printer_set_sink_page(&sink, page);
 
   /* select size */
-  printer_set_size(&sink, bmp.width, bmp.height);
+  if (printer_set_size(&sink, bmp.width, bmp.height))
+  {
+    ERROR("cannot set desired size: [%d,%d]", bmp.width, bmp.height);
+  }
 
   while (y < bmp.height)
   {
@@ -93,7 +96,11 @@ int main(int argc, char **argv)
     while(isnext(&reader))
     {
       int bit = get_bit(&reader);
-      printer_feed_bit(&sink, x, y, bit);
+      if (printer_feed_bit(&sink, x, y, bit))
+      {
+        ERROR("setting bit to (%d,%d) failed", x, y);
+        return 1;
+      }
       x++;
     }
     y++;

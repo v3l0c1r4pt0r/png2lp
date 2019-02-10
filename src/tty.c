@@ -81,6 +81,8 @@ int tty_set_size(sink_t *sink, int width, int height)
 int tty_create(sink_t *sink)
 {
   tty_state_t *state = (tty_state_t*) malloc(sizeof(tty_state_t));
+  state->width = -1;
+  state->height = -1;
   state->cur_row = -1;
   state->cur_column = -1;
 

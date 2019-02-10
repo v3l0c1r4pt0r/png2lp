@@ -1,9 +1,15 @@
 #include <stddef.h>
+#include <stdlib.h>
 
 #include "logger.h"
 #include "tty.h"
 
-typedef struct {} tty_state_t;
+typedef struct {
+  int width;
+  int height;
+  int cur_row; /**< row, where last printer character was */
+  int cur_column; /**< columns of last printed character */
+} tty_state_t;
 
 int tty_feed_bit(sink_t *sink, int x, int y, int bit);
 int tty_set_size(sink_t *sink, int width, int height);
@@ -34,6 +40,11 @@ void tty_init()
   printer_register_page(tty_vt100.name, &tty_80x25);
 }
 
+tty_state_t *tty_get_sink_state(sink_t *sink)
+{
+  return (tty_state_t*) sink->private_data;
+}
+
 int tty_feed_bit(sink_t *sink, int x, int y, int bit)
 {
   DEBUG("fed bit %d on (%d,%d)", bit,x,y);
@@ -43,6 +54,27 @@ int tty_feed_bit(sink_t *sink, int x, int y, int bit)
 int tty_set_size(sink_t *sink, int width, int height)
 {
   int rc = 0;
+  tty_state_t *state = tty_get_sink_state(sink);
+
+  DEBUG("setting img size to %d,%d", width, height);
+  state->width = width;
+  state->height = height;
+
+  /* check if feasible */
+  if (width > sink->page->width)
+  {
+    WARNING("img requested is wider than maximum, shrinking");
+    state->width = sink->page->width;
+    rc = 1;
+  }
+
+  if (height > sink->page->height)
+  {
+    WARNING("img requested is higher than maximum, shrinking");
+    state->height = sink->page->height;
+    rc = 1;
+  }
+
   return rc;
 }
 

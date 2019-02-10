@@ -24,7 +24,7 @@ typedef struct printer {
   char *name;
   printer_feed_bit_t feed_bit;
   printer_set_size_t set_size;
-  printer_create_t alloc_private;
+  printer_create_t create;
   printer_destroy_t destroy;
 } printer_t;
 

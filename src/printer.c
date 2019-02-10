@@ -193,9 +193,9 @@ int printer_set_size(sink_t *sink, int width, int height)
 
 int printer_create(sink_t *sink)
 {
-  if (sink->printer->alloc_private)
+  if (sink->printer->create)
   {
-    return sink->printer->alloc_private(sink);
+    return sink->printer->create(sink);
   }
   else
   {

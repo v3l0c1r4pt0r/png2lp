@@ -89,6 +89,7 @@ int main(int argc, char **argv)
   while (y < bmp.height)
   {
     bitstream_t reader = init_bitstream(bmp.rows[y], bmp.width);
+    x = 0;
     while(isnext(&reader))
     {
       int bit = get_bit(&reader);

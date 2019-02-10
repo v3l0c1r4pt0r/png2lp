@@ -20,8 +20,6 @@ enum command
 
 int main(int argc, char **argv)
 {
-  int c;
-  int digit_optind = 0;
   struct opts {
     char *printer;
     char *page;
@@ -32,6 +30,9 @@ int main(int argc, char **argv)
     .printer = "VT100",
     .page = "80x25 terminal (no overflow)",
   };
+  int c;
+  int digit_optind = 0;
+  sink_t sink;
 
   while (1)
   {
@@ -134,32 +135,36 @@ int main(int argc, char **argv)
   /* init printers */
   register_sinks();
 
-  if (opts.cmd == CMD_LIST)
+  int i;
+  char **printers;
+  char **pages;
+  switch(opts.cmd)
   {
-    /* list printers */
-    int i;
-    char **printers = printer_get_sinks();
+    case CMD_LIST:
+      /* list printers */
+      printers = printer_get_sinks();
 
-    for (i = 0; printers[i] != NULL; i++)
-    {
-      printf("%d: %s\n", i, printers[i]);
-    }
+      for (i = 0; printers[i] != NULL; i++)
+      {
+        printf("%d: %s\n", i, printers[i]);
+      }
 
-    return 0;
-  }
-  else if (opts.cmd == CMD_PAGELIST)
-  {
-    /* list pages */
-    int i;
-    sink_t sink = printer_get_sink(opts.printer);
-    char **pages = printer_get_sink_pages(&sink);
+      return 0;
+    case CMD_PAGELIST:
+      /* list pages */
+      sink = printer_get_sink(opts.printer);
+      pages = printer_get_sink_pages(&sink);
 
-    for (i = 0; pages[i] != NULL; i++)
-    {
-      printf("%d: %s\n", i, pages[i]);
-    }
+      for (i = 0; pages[i] != NULL; i++)
+      {
+        printf("%d: %s\n", i, pages[i]);
+      }
 
-    return 0;
+      return 0;
+    case CMD_PRINT:
+      break;
+    default:
+      ERROR("unsupported function: %x", opts.cmd);
   }
 
   /* convert png from param 1 */
@@ -176,7 +181,7 @@ int main(int argc, char **argv)
   }
 
   /* find requested sink */
-  sink_t sink = printer_get_sink(opts.printer);
+  sink = printer_get_sink(opts.printer);
   if (sink.printer == NULL)
   {
     ERROR("sink not found");

@@ -1,6 +1,7 @@
 #include <stddef.h>
 #include <stdlib.h>
 
+#include "logger.h"
 #include "oki.h"
 
 void oki_linefeed();
@@ -38,6 +39,33 @@ oki_state_t *oki_get_sink_state(sink_t *sink)
   return (oki_state_t*) sink->private_data;
 }
 
+int oki_free_image(sink_t *sink)
+{
+  int i;
+  oki_state_t *state = oki_get_sink_state(sink);
+
+  if (state == NULL)
+  {
+    ERROR("no state in sink");
+    return -1;
+  }
+
+  if (state->rows != NULL)
+  {
+    for (i = 0; i < state->num_of_rows; i++)
+    {
+      free(state->rows[i]);
+    }
+    free(state->rows);
+  }
+  else
+  {
+    return -1;
+  }
+
+  return 0;
+}
+
 int oki_create(sink_t *sink)
 {
   oki_state_t *state = (oki_state_t*) malloc(sizeof(oki_state_t));
@@ -59,16 +87,8 @@ int oki_create(sink_t *sink)
 
 int oki_destroy(sink_t *sink)
 {
-  int i;
   oki_state_t *state = oki_get_sink_state(sink);
-  if (state->rows != NULL)
-  {
-    for (i = 0; i < state->num_of_rows; i++)
-    {
-      free(state->rows[i]);
-    }
-    free(state->rows);
-  }
+  oki_free_image(sink);
   free(state);
 
   return 0;

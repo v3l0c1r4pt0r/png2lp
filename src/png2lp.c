@@ -94,10 +94,8 @@ int main(int argc, char **argv)
     {
       int bit = get_bit(&reader);
       printer_feed_bit(&sink, x, y, bit);
-      printf("%s", bit?"  ":"\u2588\u2588");
       x++;
     }
-    printf("\n");
     y++;
   }
 

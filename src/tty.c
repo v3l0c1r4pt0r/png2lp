@@ -18,7 +18,8 @@ int tty_create(sink_t *sink);
 int tty_destroy(sink_t *sink);
 
 printer_t tty_vt100 = {
-  .name = "VT100",
+  .name = "vt100",
+  .description = "VT100",
   .feed_bit = tty_feed_bit,
   .set_size = tty_set_size,
   .create = tty_create,
@@ -26,13 +27,15 @@ printer_t tty_vt100 = {
 };
 
 page_t tty_80x25 = {
-  .name = "80x25 terminal",
+  .name = "80x25",
+  .description = "80x25 terminal",
   .width=80,
   .height=25
 };
 
 page_t tty_80xINF = {
-  .name = "80x25 terminal (no overflow)",
+  .name = "80xINF",
+  .description = "80x25 terminal (no overflow)",
   .width=80,
   .height=(unsigned int)-1
 };

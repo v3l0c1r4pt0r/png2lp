@@ -22,6 +22,7 @@ typedef int (*printer_destroy_t)(struct sink *sink);
 
 typedef struct printer {
   char *name;
+  char *description;
   printer_feed_bit_t feed_bit;
   printer_set_size_t set_size;
   printer_create_t create;
@@ -30,6 +31,7 @@ typedef struct printer {
 
 typedef struct page {
   char *name;
+  char *description;
   unsigned int width;
   unsigned int height;
   unsigned int dpi;
@@ -46,8 +48,10 @@ void register_sinks();
 int printer_register_sink(printer_t *printer);
 int printer_register_page(char *printer, page_t *page);
 sink_t printer_get_sink(char *name);
+char *printer_get_description(char *name);
 char **printer_get_sinks();
 page_t *printer_get_sink_page_by_name(sink_t *sink, char *name);
+char *printer_get_page_description(sink_t *sink, char *name);
 char **printer_get_sink_pages(sink_t *sink);
 void printer_set_sink_page(sink_t *sink, page_t *page);
 

@@ -21,6 +21,9 @@ void register_sinks()
   tty_init();
 }
 
+static printer_t *printer_get_by_name(char *name);
+static printer_descriptor_t *printer_get_descriptor(printer_t *printer);
+
 static printer_descriptor_t *printer_get_descriptor(printer_t *printer)
 {
   return (printer_descriptor_t*) printer;
@@ -88,13 +91,8 @@ char **printer_get_sinks()
   return result;
 }
 
-sink_t printer_get_sink(char *name)
+static printer_t *printer_get_by_name(char *name)
 {
-  sink_t result = {
-    .printer = NULL,
-    .page = NULL,
-    .fd = -1
-  };
   printer_t *printer;
   list_t *it = printers;
   while ((it = list_next(it)) != NULL)
@@ -103,10 +101,20 @@ sink_t printer_get_sink(char *name)
     if (strcmp(printer->name, name) == 0)
     {
       DEBUG("found sink for %s", name);
-      result.printer = printer;
-      break;
+      return printer;
     }
   }
+  return NULL;
+}
+
+sink_t printer_get_sink(char *name)
+{
+  sink_t result = {
+    .printer = NULL,
+    .page = NULL,
+    .fd = -1
+  };
+  result.printer = printer_get_by_name(name);
 
   /* let printer alloc its private data */
   printer_create(&result);
@@ -215,4 +223,26 @@ int printer_destroy(sink_t *sink)
     /* printer does not support private data, always success */
     return 0;
   }
+}
+
+char *printer_get_description(char *name)
+{
+  printer_t *printer = printer_get_by_name(name);
+  if (printer == NULL)
+  {
+    return NULL;
+  }
+
+  return printer->description;
+}
+
+char *printer_get_page_description(sink_t *sink, char *name)
+{
+  page_t *page = printer_get_sink_page_by_name(sink, name);
+  if (page == NULL)
+  {
+    return NULL;
+  }
+
+  return page->description;
 }

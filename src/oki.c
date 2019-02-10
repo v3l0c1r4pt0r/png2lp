@@ -33,7 +33,8 @@ typedef struct {
 } oki_state_t;
 
 printer_t oki_3321 = {
-  .name = "Oki 3321",
+  .name = "oki3321",
+  .description = "Oki 3321",
   .feed_bit = oki_feed_bit,
   .set_size = oki_set_size,
   .create = oki_create,
@@ -41,7 +42,8 @@ printer_t oki_3321 = {
 };
 
 page_t oki_a4p = {
-  .name = "A4 Portrait",
+  .name = "a4-p",
+  .description = "A4 Portrait",
   .width=0x1e4,
   .height=102*8
 };

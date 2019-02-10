@@ -138,6 +138,7 @@ int main(int argc, char **argv)
   int i;
   char **printers;
   char **pages;
+  char *descr;
   switch(opts.cmd)
   {
     case CMD_LIST:
@@ -146,7 +147,8 @@ int main(int argc, char **argv)
 
       for (i = 0; printers[i] != NULL; i++)
       {
-        printf("%d: %s\n", i, printers[i]);
+        descr = printer_get_description(printers[i]);
+        printf("%d: %s - %s\n", i, printers[i], descr);
       }
 
       return 0;
@@ -157,8 +159,11 @@ int main(int argc, char **argv)
 
       for (i = 0; pages[i] != NULL; i++)
       {
-        printf("%d: %s\n", i, pages[i]);
+        descr = printer_get_page_description(&sink, pages[i]);
+        printf("%d: %s - %s\n", i, pages[i], descr);
       }
+
+      printer_destroy(&sink);
 
       return 0;
     case CMD_PRINT:

@@ -6,6 +6,7 @@
 
 void oki_linefeed();
 int oki_feed_bit(sink_t *sink, int x, int y, int bit);
+int oki_set_size(sink_t *sink, int width, int height);
 void oki_init();
 void oki_enter_graphic_mode(int columns);
 int oki_create(sink_t *sink);
@@ -33,6 +34,7 @@ typedef struct {
 printer_t oki_3321 = {
   .name = "Oki 3321",
   .feed_bit = oki_feed_bit,
+  .set_size = oki_set_size,
   .create = oki_create,
   .destroy = oki_destroy,
 };
@@ -112,5 +114,48 @@ int oki_destroy(sink_t *sink)
 
 int oki_feed_bit(sink_t *sink, int x, int y, int bit)
 {
-  return -1;
+}
+
+int oki_set_size(sink_t *sink, int width, int height)
+{
+  int i;
+  int rc = 0;
+  oki_state_t *state = oki_get_sink_state(sink);
+
+  DEBUG("setting img size to %d,%d", width, height);
+  state->width = width;
+  state->height = height;
+
+  /* check if feasible */
+  if (width > sink->page->width)
+  {
+    WARNING("img requested is wider than maximum, shrinking");
+    state->width = sink->page->width;
+    rc = 1;
+  }
+
+  if (height > sink->page->height)
+  {
+    WARNING("img requested is higher than maximum, shrinking");
+    state->height = sink->page->height;
+    rc = 1;
+  }
+
+  /* if there was some buffer before, free it now */
+  oki_free_image(sink);
+
+  /* allocate buffers for image state */
+  state->num_of_rows = state->height / 8 + ((state->height % 8) == 1);
+  DEBUG("number of word rows to cover whole img is %d", state->num_of_rows);
+  state->rows = (word_t**) malloc(sizeof(word_t*) * state->num_of_rows);
+  for (i = 0; i < state->num_of_rows; i++)
+  {
+    state->rows[i] = (word_t*) calloc(state->width, sizeof(word_t));
+  }
+
+  /* set current printing state */
+  state->ready_row = 0;
+  state->ready_column = 0;
+
+  return rc;
 }

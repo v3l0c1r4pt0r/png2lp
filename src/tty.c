@@ -54,8 +54,32 @@ tty_state_t *tty_get_sink_state(sink_t *sink)
 
 int tty_feed_bit(sink_t *sink, int x, int y, int bit)
 {
-  DEBUG("fed bit %d on (%d,%d)", bit,x,y);
-  return -1;
+  tty_state_t *state = tty_get_sink_state(sink);
+
+  if (x > state->width | y > state->height)
+  {
+    ERROR("(%d,%d): cannot write outside the image", x, y);
+    return -1;
+  }
+
+  if (x != state->cur_column + 1 || y != state->cur_row)
+  {
+    DEBUG("wrongly fed bit %d on (%d,%d)", bit,x,y);
+    return -1;
+  }
+
+  printf("%s", bit?"  ":"\u2588\u2588");
+  state->cur_column++;
+
+  if (state->cur_column == (state->width - 1))
+  {
+    DEBUG("finished row %d", state->cur_row);
+    printf("\n");
+    state->cur_row++;
+    state->cur_column = -1;
+  }
+
+  return 0;
 }
 
 int tty_set_size(sink_t *sink, int width, int height)
@@ -90,7 +114,9 @@ int tty_create(sink_t *sink)
   tty_state_t *state = (tty_state_t*) malloc(sizeof(tty_state_t));
   state->width = -1;
   state->height = -1;
-  state->cur_row = -1;
+
+  /* set to (0, -1); next pixel will be (0, 0) */
+  state->cur_row = 0;
   state->cur_column = -1;
 
   sink->private_data = (void*) state;

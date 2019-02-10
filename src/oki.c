@@ -43,7 +43,7 @@ printer_t oki_3321 = {
 page_t oki_a4p = {
   .name = "A4 Portrait",
   .width=0x1e4,
-  .height=95*8
+  .height=102*8
 };
 
 void oki_init()

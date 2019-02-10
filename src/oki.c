@@ -1,5 +1,6 @@
 #include <stddef.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "logger.h"
 #include "oki.h"
@@ -12,7 +13,7 @@ void oki_enter_graphic_mode(int columns);
 int oki_create(sink_t *sink);
 int oki_destroy(sink_t *sink);
 
-static char start[] = "\eK\x23\x01";
+static char start[] = "\eK";
 static char nl[]="\r\eJ\x18";
 
 uint8_t masks[8] = {0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01};
@@ -156,8 +157,13 @@ int oki_feed_bit(sink_t *sink, int x, int y, int bit)
       word = &state->rows[*r][*c];
       if (word->fill == 0xff)
       {
+        /* if first in a row, enter graphic mode */
+        if (*c == 0)
+        {
+          oki_enter_graphic_mode(state->width);
+        }
         DEBUG("found ready word @%d,%d: %02x", *r, *c, word->bits);
-        // TODO: print word
+        printf("%c", word->bits);
       }
       else
       {
@@ -172,6 +178,7 @@ int oki_feed_bit(sink_t *sink, int x, int y, int bit)
     }
     *c = 0;
     DEBUG("finished row %d", *r);
+    oki_linefeed();
     // TODO: print EOL
   }
 
@@ -240,4 +247,18 @@ int oki_set_size(sink_t *sink, int width, int height)
   }
 
   return rc;
+}
+
+void oki_enter_graphic_mode(int columns)
+{
+  if (columns > 0xffff)
+  {
+    ERROR("not enough room to push whole number (16bit available)");
+  }
+  printf("%s%c%c", start, columns % 0xff, columns / 0xff);
+}
+
+void oki_linefeed()
+{
+  printf(nl);
 }

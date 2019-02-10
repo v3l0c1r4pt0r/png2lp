@@ -14,6 +14,22 @@ int oki_destroy(sink_t *sink);
 static char start[] = "\eK\x23\x01";
 static char nl[]="\r\eJ\x18";
 
+uint8_t masks[8] = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80};
+
+typedef struct {
+  uint8_t bits;
+  uint8_t fill;
+} word_t; /**< describes one character pushed to printer */
+
+typedef struct {
+  int width;
+  int height;
+  int num_of_rows; /**< number of rows, where row contain subrow of 8 pixels */
+  word_t **rows;
+  int ready_row; /**< location of last ready to print row */
+  int ready_column; /**< number of last column ready to print in a row */
+} oki_state_t;
+
 printer_t oki_3321 = {
   .name = "Oki 3321",
   .feed_bit = oki_feed_bit,

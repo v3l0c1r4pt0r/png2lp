@@ -221,5 +221,23 @@ int oki_set_size(sink_t *sink, int width, int height)
   state->ready_row = 0;
   state->ready_column = 0;
 
+  /* set unused bits in last row to 1, if any */
+  if (state->num_of_rows * 8 > state->height)
+  {
+    int mask_start = state->height % 8;
+    uint8_t mask = 0;
+    for (i = mask_start; i < 8; i++)
+    {
+      mask |= masks[i];
+    }
+    DEBUG("setting mask %02x for unused bits on last row", mask);
+
+    /* iterate through whole row */
+    for (i = 0; i < state->width; i++)
+    {
+      state->rows[state->num_of_rows - 1][i].fill = mask;
+    }
+  }
+
   return rc;
 }

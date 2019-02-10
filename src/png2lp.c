@@ -76,6 +76,11 @@ int main(int argc, char **argv)
 
   /* select page */
   page_t *page = printer_get_sink_page_by_name(&sink, page_name);
+  if (page == NULL)
+  {
+    ERROR("page '%s' cannot be found for '%s'", page_name, printer_name);
+    return 1;
+  }
   printer_set_sink_page(&sink, page);
 
   /* select size */

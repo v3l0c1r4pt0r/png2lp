@@ -8,6 +8,7 @@ typedef struct {} tty_state_t;
 int tty_feed_bit(sink_t *sink, int x, int y, int bit);
 int tty_set_size(sink_t *sink, int width, int height);
 int tty_create(sink_t *sink);
+int tty_destroy(sink_t *sink);
 
 static char start[] = "";
 static char nl[]="\n";
@@ -17,6 +18,7 @@ printer_t tty_vt100 = {
   .feed_bit = tty_feed_bit,
   .set_size = tty_set_size,
   .create = tty_create,
+  .destroy = tty_destroy,
 };
 
 page_t tty_80x25 = {
@@ -53,4 +55,9 @@ int tty_create(sink_t *sink)
   sink->private_data = (void*) state;
 
   return 0;
+}
+
+int tty_destroy(sink_t *sink)
+{
+  free(sink->private_data);
 }

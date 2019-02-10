@@ -96,6 +96,7 @@ int main(int argc, char **argv)
   }
 
   printf("Finished\n");
+  printer_destroy(&sink);
   simple_png_free(&bmp);
   return 0;
 }

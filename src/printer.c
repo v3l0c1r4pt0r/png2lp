@@ -203,3 +203,16 @@ int printer_create(sink_t *sink)
     return 0;
   }
 }
+
+int printer_destroy(sink_t *sink)
+{
+  if (sink->printer->destroy)
+  {
+    return sink->printer->destroy(sink);
+  }
+  else
+  {
+    /* printer does not support private data, always success */
+    return 0;
+  }
+}

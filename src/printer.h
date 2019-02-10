@@ -18,12 +18,14 @@ struct sink;
 typedef int (*printer_feed_bit_t)(struct sink *sink, int x, int y, int bit);
 typedef int (*printer_set_size_t)(struct sink *sink, int width, int height);
 typedef int (*printer_create_t)(struct sink *sink);
+typedef int (*printer_destroy_t)(struct sink *sink);
 
 typedef struct printer {
   char *name;
   printer_feed_bit_t feed_bit;
   printer_set_size_t set_size;
   printer_create_t alloc_private;
+  printer_destroy_t destroy;
 } printer_t;
 
 typedef struct page {
@@ -52,5 +54,6 @@ void printer_set_sink_page(sink_t *sink, page_t *page);
 int printer_feed_bit(sink_t *sink, int x, int y, int bit);
 int printer_set_size(sink_t *sink, int width, int height);
 int printer_create(sink_t *sink);
+int printer_destroy(sink_t *sink);
 
 #endif // PRINTER_H

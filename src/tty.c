@@ -1,3 +1,5 @@
+#include <stddef.h>
+
 #include "logger.h"
 #include "tty.h"
 
@@ -22,7 +24,7 @@ page_t tty_80x25 = {
 void tty_init()
 {
   // TODO: check error codes
-  printer_register_sink(&tty_vt100);
+  printer_register_sink(&tty_vt100, NULL);
   printer_register_page(tty_vt100.name, &tty_80x25);
 }
 

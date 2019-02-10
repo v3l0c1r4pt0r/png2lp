@@ -38,7 +38,7 @@ typedef struct sink {
 } sink_t;
 
 void register_sinks();
-int printer_register_sink(printer_t *printer);
+int printer_register_sink(printer_t *printer, void *private_data);
 int printer_register_page(char *printer, page_t *page);
 sink_t printer_get_sink(char *name);
 char **printer_get_sinks();

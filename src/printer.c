@@ -9,6 +9,7 @@
 typedef struct {
   printer_t printer;
   list_t *pages;
+  void *private;
 } printer_descriptor_t;
 
 list_t *printers;
@@ -25,13 +26,14 @@ static printer_descriptor_t *printer_get_descriptor(printer_t *printer)
   return (printer_descriptor_t*) printer;
 }
 
-int printer_register_sink(printer_t *printer)
+int printer_register_sink(printer_t *printer, void *private_data)
 {
   // TODO: check error codes
   printer_descriptor_t *descr = (printer_descriptor_t*) malloc(sizeof(printer_descriptor_t));
 
   descr->printer = *printer;
   descr->pages = list_alloc();
+  descr->private = private_data;
 
   list_append(printers, descr);
 

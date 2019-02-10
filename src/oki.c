@@ -114,6 +114,70 @@ int oki_destroy(sink_t *sink)
 
 int oki_feed_bit(sink_t *sink, int x, int y, int bit)
 {
+  int row, bitn;
+  int *r,*c;
+  oki_state_t *state = oki_get_sink_state(sink);
+  word_t *word;
+
+  DEBUG("feeding bit %d on (%d,%d)", bit,x,y);
+
+  if (x > state->width | y > state->height)
+  {
+    ERROR("(%d,%d): cannot write outside the image", x, y);
+    return -1;
+  }
+
+  /* find row */
+  row = y / 8;
+  bitn = y % 8;
+  DEBUG("setting bit #%d to row %d", bitn, row);
+
+  /* set bit and mark as written in a word */
+  word = &state->rows[row][x];
+  if (bit)
+  {
+    word->bits |= masks[bitn];
+  }
+  word->fill |= masks[bitn];
+
+  DEBUG("word state is %02x on mask %02x", word->bits, word->fill);
+
+  /* print all ready words from current to last set */
+  r = &state->ready_row; /* this way we can use short name while still
+                          * incrementing ready state */
+  c = &state->ready_column;
+
+  /* for every row from last printed to currently updated */
+  for (; *r <= row; (*r)++)
+  {
+    /* for every column in that row */
+    for (; *c < state->width; (*c)++)
+    {
+      word = &state->rows[*r][*c];
+      if (word->fill == 0xff)
+      {
+        DEBUG("found ready word @%d,%d: %02x", *r, *c, word->bits);
+        // TODO: print word
+      }
+      else
+      {
+        return 0;
+      }
+
+      /* if we reached column of X, leave to not damage state->ready_column */
+      if (*c > x && *c != state->width)
+      {
+        return 0;
+      }
+    }
+    *c = 0;
+    DEBUG("finished row %d", *r);
+    // TODO: print EOL
+  }
+
+  /* getting here means everything is ready */
+
+  return 0;
 }
 
 int oki_set_size(sink_t *sink, int width, int height)

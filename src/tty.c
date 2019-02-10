@@ -3,6 +3,8 @@
 #include "logger.h"
 #include "tty.h"
 
+typedef struct {} tty_state_t;
+
 int tty_feed_bit(sink_t *sink, int x, int y, int bit);
 int tty_set_size(sink_t *sink, int width, int height);
 
@@ -24,7 +26,8 @@ page_t tty_80x25 = {
 void tty_init()
 {
   // TODO: check error codes
-  printer_register_sink(&tty_vt100, NULL);
+  tty_state_t *state = (tty_state_t*) malloc(sizeof(tty_state_t));
+  printer_register_sink(&tty_vt100, state);
   printer_register_page(tty_vt100.name, &tty_80x25);
 }
 

@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 
 #include "simplepng.h"
 
@@ -20,11 +21,18 @@ bitmap_t simple_png_read(char* file_name)
   int number_of_passes;
 
   /* open file */
-  fd = fopen(file_name, "rb");
-  if (!fd)
+  if (strcmp(file_name, "-") == 0)
   {
-    perror("fopen");
-    return result;
+    fd = stdin;
+  }
+  else
+  {
+    fd = fopen(file_name, "rb");
+    if (!fd)
+    {
+      perror("fopen");
+      return result;
+    }
   }
 
   /* read and compare signature */

@@ -45,7 +45,7 @@ page_t oki_a4p = {
   .name = "a4-p",
   .description = "A4 Portrait",
   .width=0x1e4,
-  .height=102*8
+  .height=95*8
 };
 
 void oki_init()

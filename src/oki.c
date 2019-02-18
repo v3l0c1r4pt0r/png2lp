@@ -218,7 +218,7 @@ int oki_set_size(sink_t *sink, int width, int height)
   oki_free_image(sink);
 
   /* allocate buffers for image state */
-  state->num_of_rows = state->height / 8 + ((state->height % 8) == 1);
+  state->num_of_rows = state->height / 8 + ((state->height % 8) != 0);
   DEBUG("number of word rows to cover whole img is %d", state->num_of_rows);
   state->rows = (word_t**) malloc(sizeof(word_t*) * state->num_of_rows);
   for (i = 0; i < state->num_of_rows; i++)
